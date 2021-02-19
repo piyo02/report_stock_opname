@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="temp_report_stock_opname">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                    <div class="row">
+                    <center>
+                        <b>
+                            <h3><u>LAPORAN STOCK OPNAME</u></h3>
+                        </b>
+                        <b>
+                            <span t-esc="start_date"/> sampai <span t-esc="end_date"/>
+                        </b>
+                    </center>
+                </div>
+                <br/>
+                <t t-set="total" t-value="0"/>
+                <t t-foreach="data.keys()" t-as="date">
+                    <br/>
+                    <center>
+                        <b>
+                            Tanggal: <span t-esc="date"/>
+                        </b>
+                    </center>
+                    <t t-foreach="data[date].keys()" t-as="loc">
+                    
+                        <t t-if="data[date][loc]">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <table class="table table-condensed" style="margin-bottom:-2px">
+                                        <thead >
+                                            <tr>
+                                                <th>Lokasi: </th>
+                                                <td>
+                                                    <b>
+                                                        <span t-esc="loc"/>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                        <table class="table table-bordered table-condensed table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Produk</th>
+                                    <th>Satuan</th>
+                                    <th>Real Qty</th>
+                                    <th>Teo. Qty</th>
+                                    <th>Selisih</th>
+                                    <th class="text-right">Inv. Val</th>
+                                </tr>
+                                <t t-set="number" t-value="1"/>
+                                <t t-set="total_inv_in_wh" t-value="0"/>
+                                <t t-foreach="data[date][loc]" t-as="product">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="number"/>
+                                            <t t-set="number" t-value="number + 1"/>                                        
+                                        </td>
+                                        <td>
+                                            <span t-esc="product[0]"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="product[1]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="product[2]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="product[3]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="product[4]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(product[5])"/>
+                                            <t t-set="total_inv_in_wh" t-value="total_inv_in_wh + product[5]"/>                                        
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td><strong>Inv. Val: </strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(total_inv_in_wh)"/>
+                                            <t t-set="total" t-value="total + total_inv_in_wh"/>                                        
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+
+                <div class="row">
+                    <div class="col-xs-4 pull-right">
+                        <table class="table table-condensed">
+                            <tr>
+                                <td><strong>Total Inv. Val: </strong></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,}'.format(total)"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+</odoo>
