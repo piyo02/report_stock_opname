@@ -52,10 +52,11 @@ class ReportStockOpname(models.TransientModel):
                     ])
 
                     row = 0
-                    inv_val = 0
+                    avr_inv_val = 0
+                    total_inv_val = 0
                     for quant in quants:
                         row =+ 1
-                        total_inv_val =+ quant.inventory_value
+                        total_inv_val =+ quant.cost
 
                     if row:
                         avr_inv_val = total_inv_val/row
